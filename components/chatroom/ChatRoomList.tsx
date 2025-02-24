@@ -12,7 +12,7 @@ interface ChatRoomListProps {
   handleMobileMenu?: () => void;
 }
 
-type Action = 'Join' | 'Leave' | 'Delete';
+type Action = 'Join' | 'Leave' | 'Edit';
 
 const ChatRoomList = ({ setChatRoomId, handleMobileMenu }: ChatRoomListProps) => {
   const { chatRooms, isLoading, error, mutate } = useChatRooms();
@@ -48,7 +48,7 @@ const ChatRoomList = ({ setChatRoomId, handleMobileMenu }: ChatRoomListProps) =>
         {chatRooms && chatRooms.length > 0 ? (
             chatRooms.map((chatRoom) => {
                 const isUserInRoom = chatRoom.userIDs.includes(userId!);
-                const action: Action = chatRoom.createdById === userId ? 'Delete' : isUserInRoom ? 'Leave' : 'Join';
+                const action: Action = chatRoom.createdById === userId ? 'Edit' : isUserInRoom ? 'Leave' : 'Join';
                 const formattedName = chatRoom.name.length > 15 ? chatRoom.name.slice(0, 15) + '...' : chatRoom.name;
                 return (
                     <div key={chatRoom.id}
@@ -67,11 +67,11 @@ const ChatRoomList = ({ setChatRoomId, handleMobileMenu }: ChatRoomListProps) =>
                                 <LeaveRoom chatRoomId={chatRoom.id} mutate={mutate} />
                             ) : (
                                 <button
-                                    className='chat-room-button bg-red-500'
-                                    disabled={action === 'Delete'}
+                                    className='chat-room-button bg-green-600'
+                                    disabled={action === 'Edit'}
                                 >
                                     <HiOutlineChatAlt2 size={20} />
-                                    <span>Delete</span>
+                                    <span>Edit</span>
                                 </button>
                             )}
                             
