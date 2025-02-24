@@ -1,21 +1,353 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script:wght@400;700&family=Outfit:wght@100..900&family=Rouge+Script&family=Sofia&display=swap');
+@import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+@theme {
+  --breakpoint-xs: 480px;
+  --breakpoint-3xl: 2000px;
+  --color-foreground: #030014;
+  --color-background: #cecefb;
+  --color-gray-100: #9ca4ab;
+  --color-dark-100: #0f0d23;
+  --color-dark-200: #030014;
+  --color-dark-300: #0f0f0f;
+  --color-gradient-1: rgb(3,123,243);
+  --color-work-hover: rgba(0, 0, 0, 0.5);
+  --shadow-custom: 0 4px 20px rgba(0, 0, 0, 0.25), 0 0 40px rgba(0, 0, 0, 0.1);
+  --shadow-work-item: 0 0 25px rgba(0, 0, 0, 0.2), 0 0 30px rgba(0, 0, 0, 0.1);
+  --font-base: "DM Sans", sans-serif;
+  --font-oleo: "Oleo Script", cursive;
+  --font-sofia: "Sofia", cursive;
+  --font-rouge: "Rouge Script", cursive;
+  --font-outfit: "Outfit", sans-serif;
+  
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  .dark {
+     --color-foreground: #cecefb;
+     --color-background: #000000;
+     --color-dark-100: #0f0d23;
+     --color-dark-200: #030014;
+     --color-dark-300: #0f0f0f;
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    transition: background-color 0.3s ease;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-base overflow-hidden;
+  }
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  border-radius: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(22, 22, 22, 0.57);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #5e5f5e;
+  border-radius: 50px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #2b2a2a;
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md bg-gradient-1 text-white;
+  }
+  .form-details {
+    @apply flex flex-col gap-3 justify-center items-center w-full h-11/12 md:w-[550px] p-2 md:p-6 rounded-2xl;
+
+    & .form-header {
+      @apply flex justify-center items-center gap-2 w-full max-w-[500px] text-slate-950 py-3 rounded-t-xl;
+      @apply bg-gradient-to-r from-sky-600 via-fuchsia-950 to-[#5230ce];
+    }
+
+    & .form-container {
+      @apply flex justify-center items-center w-full;
+    }
+
+    & .form {
+      @apply flex flex-col gap-2 md:gap-4 w-full md:w-[500px] p-1;
+    }
+
+    & .form-item {
+      @apply flex flex-col w-full md:flex-row items-center my-2;
+    }
+
+    & .form-item-label {
+      @apply flex w-full md:w-1/5;
+    }
+
+    & .form-item-input {
+      @apply flex relative w-full md:w-4/5;
+    }
+
+    & .form-input {
+      @apply border-2 border-slate-600/50 bg-transparent rounded-md w-full py-3 max-w-md;
+    }
+
+    & .form-button-container {
+      @apply flex w-full my-2;
+    }
+
+    & .form-button-item {
+      @apply w-1/2 md:w-1/4;
+    }
+
+    & .form-button {
+      @apply flex w-full text-slate-800 hover:text-slate-600 rounded-md py-2 px-4 items-center justify-center gap-1 cursor-pointer;
+      @apply bg-gradient-to-r from-purple-500 to-pink-500;
+    }
+  }
+
+  .loader-error-container {
+    @apply flex items-center justify-center h-full w-full bg-background rounded-lg;
+  }
+
+  .details-card {
+    @apply fixed inset-0 flex items-start justify-center bg-dark-300/60 w-full h-full z-50;
+
+    & img {
+      @apply rounded-lg h-auto w-full;
+    }
+
+    &.close {
+      @apply absolute top-4 right-4 text-gray-500 hover:text-gray-800;
+    }
+
+    & .main {
+      @apply bg-background dark:bg-dark-300 px-2 py-8 md:p-8 my-10 rounded-lg shadow-lg w-11/12 h-9/12 md:w-[600px] md:h-[600px] relative;
+      @apply transform transition-transform duration-300 scale-95;
+    }
+
+    & .button {
+      @apply absolute top-4 right-4 text-gray-500 hover:text-gray-800;
+    }
+  }
+
+  .home-container {
+    @apply flex flex-col items-center justify-center h-11/12 md:h-[700px] w-full mt-10 mx-10;
+
+    & .home-main {
+      @apply flex items-center justify-center gap-2 h-screen w-full max-w-[1200px] rounded-lg p-5;
+    }
+
+    & .home-mobile-menu {
+      @apply md:hidden absolute top-20 left-3 flex flex-col gap-4 w-3/4 h-10/12 shadow-custom rounded-lg;
+      @apply bg-background dark:bg-dark-300 p-2;
+    }
+
+    & .home-chat-rooms {
+      @apply hidden md:flex flex-col gap-4 md:w-1/3 lg:w-1/4 h-full shadow-custom shadow-fuchsia-500/20 rounded-lg p-2;
+    }
+
+    & .mobile-chat-rooms {
+      @apply flex flex-col gap-4 w-full h-full rounded-lg p-2;
+    }
+
+    & .home-create-room {
+      @apply flex items-center justify-between dark:bg-dark-300 rounded-t-lg shadow-custom ps-2 font-semibold;
+    }
+
+    & .home-create-button {
+      @apply flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-slate-300 px-4 py-2 rounded-tr-lg cursor-pointer;
+      @apply opacity-80 hover:opacity-60;
+    }
+
+    & .home-chat-list {
+      @apply flex items-center justify-center bg-gradient-to-r from-[#3d30ec] to-[#750180]  rounded-lg p-0.5 h-full max-h-[535px] md:max-h-[554px];
+    }
+
+    & .home-chat-section {
+      @apply flex flex-col gap-4 w-full md:w-2/3 lg:w-3/4 h-full shadow-custom shadow-fuchsia-500/20 rounded-lg p-5;
+    }
+
+    & .home-chat-footer {
+      @apply flex items-center justify-center gap-2 w-full h-10 rounded-lg;
+    }
+  }
+
+  .header {
+    @apply fixed top-0 left-0 right-0 z-50 flex items-center justify-between w-full h-16 px-5 py-2 shadow-custom;
+
+    & .header-left {
+      @apply flex items-center gap-2;
+
+      & .header-left-mobile {
+        @apply flex items-center py-2 px-3 md:hidden rounded-lg shadow-custom dark:bg-dark-300;
+      }
+
+      & .header-left-item {
+        @apply flex items-center rounded-lg shadow-custom dark:bg-dark-300 p-2;
+      }
+
+      & .header-left-profile {
+        @apply flex relative items-center border border-slate-950 shadow-custom shadow-fuchsia-500/20 rounded-full h-12 w-12;
+      }
+    }
+
+    & .header-right {
+      @apply flex items-center gap-4 rounded-lg shadow-custom p-2;
+    }
+  }
+
+  .chat-room-list {
+    @apply flex flex-col gap-2 p-2 bg-background border-2 border-transparent rounded-lg h-full w-full;
+    @apply overflow-y-scroll custom-scrollbar;
+  }
+
+  .chat-room {
+    @apply flex justify-between items-center gap-2 p-2 rounded-md min-h-[80px];
+
+    & .chat-room-name {
+      @apply text-sm font-semibold bg-linear-to-r from-[#527df3] via-fuchsia-950 to-[#5230ce] bg-clip-text text-transparent;
+    }
+
+    & .chat-room-button {
+      @apply flex items-center gap-2 text-sm px-2 py-1 rounded-md text-slate-900;
+    }
+  }
+
+  .chat-section {
+    @apply flex flex-col gap-2 h-full;
+
+    & .chat-section-display {
+      @apply flex items-center justify-center bg-gradient-to-r from-[#3d30ec] to-[#750180] h-4/5 w-full rounded-lg p-0.5;
+    }
+  }
+
+  .active-room {
+    @apply bg-slate-500/50 dark:bg-dark-300/50 shadow-none;
+  }
+
+  .inactive-room {
+    @apply bg-background dark:bg-dark-300 shadow-custom;
+  }
+
+  .inactive-room:hover {
+    @apply bg-slate-500/50 dark:bg-dark-300/50 shadow-none;
+  }
+
+  .chat-display {
+    @apply flex flex-col bg-background gap-2 h-full w-full border border-transparent rounded-lg p-2;
+
+    & .chat-display-header {
+      @apply flex items-center justify-between shadow-custom p-2 rounded-t-lg bg-gradient-to-r from-[#b0dcff] via-[#f5dbb3] to-[#4c64f1dc];
+      @apply dark:bg-gradient-to-r dark:from-[#03002b] dark:via-[#3d2500] dark:to-[#6d456d];
+    }
+
+    & .header-left {
+      @apply flex items-center gap-3;
+    }
+
+    & .header-right {
+      @apply flex items-center gap-3 text-slate-900;
+    }
+
+    & .header-right-item {
+      @apply flex items-center gap-2;
+    }
+
+    & .display-messages {
+      @apply flex flex-col items-center gap-2 max-h-[450px] overflow-y-scroll custom-scrollbar;
+    }
+
+    & .message-container {
+      @apply flex w-full gap-2 rounded-lg;
+    }
+
+    & .message-content {
+      @apply flex flex-col items-center justify-start gap-2 p-2 shadow-custom rounded-lg dark:bg-dark-300/70;
+    }
+
+    & .message-sender {
+      @apply flex items-center justify-start gap-2 w-full;
+    }
+
+    & .message-sender-image {
+      @apply flex relative w-10 h-10 rounded-full;
+    }
+  }
+
+  .chat-input {
+    @apply flex flex-col gap-2 h-1/5 p-2;
+
+    & .main {
+      @apply flex flex-col items-center justify-center w-full;
+    }
+
+    & .input-form {
+      @apply flex items-center justify-center w-full gap-1;
+    }
+
+    & .input {
+      @apply w-5/6 p-2 rounded-lg border border-gray-900;
+    }
+
+    & .input-button {
+      @apply flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white p-2 rounded-lg w-1/6;
+      @apply opacity-80 hover:opacity-60;
+    }
+  }
+}
+@utility text-gradient {
+  @apply bg-linear-to-r from-[#3b09c4] to-[#064400] bg-clip-text text-transparent;
+}
+
+@utility text-logo {
+  @apply text-2xl font-oleo bg-linear-to-r from-[#0242f3] via-cyan-500 to-[#4312f1] bg-clip-text text-transparent;
+}
+
+@utility text-footer {
+  @apply text-sm font-oleo bg-linear-to-r from-[#0242f3] via-cyan-500 to-[#4312f1] bg-clip-text text-transparent;
+}
+
+@utility text-title {
+  @apply bg-linear-to-r from-[#527df3] via-fuchsia-950 to-[#5230ce] bg-clip-text text-transparent;
+}
+
+@utility text-button {
+  @apply font-semibold bg-linear-to-r from-[#000c30] via-cyan-700 to-[#02000a] bg-clip-text text-transparent;
+}
+
+@utility fancy-text {
+  -webkit-text-stroke: 5px rgba(206, 206, 251, 0.5);
+  font-size: 190px;
+  font-family: "Bebas Neue", sans-serif;
+}
+
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(22, 22, 22, 0.57);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #5e5f5e;
+    border-radius: 50px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #2b2a2a;
+  }
 }
